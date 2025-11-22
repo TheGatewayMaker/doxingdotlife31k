@@ -21,43 +21,310 @@ interface PostsResponse {
 }
 
 const COUNTRIES = [
-  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia", "Australia",
-  "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
-  "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei",
-  "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic",
-  "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus",
-  "Czech Republic", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador",
-  "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland",
-  "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala",
-  "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India",
-  "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan",
-  "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon",
-  "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
-  "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico",
-  "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
-  "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria",
-  "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama",
-  "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania",
-  "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines",
-  "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
-  "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa",
-  "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland",
-  "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago",
-  "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates",
-  "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela",
-  "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+  "Afghanistan",
+  "Albania",
+  "Algeria",
+  "Andorra",
+  "Angola",
+  "Argentina",
+  "Armenia",
+  "Australia",
+  "Austria",
+  "Azerbaijan",
+  "Bahamas",
+  "Bahrain",
+  "Bangladesh",
+  "Barbados",
+  "Belarus",
+  "Belgium",
+  "Belize",
+  "Benin",
+  "Bhutan",
+  "Bolivia",
+  "Bosnia and Herzegovina",
+  "Botswana",
+  "Brazil",
+  "Brunei",
+  "Bulgaria",
+  "Burkina Faso",
+  "Burundi",
+  "Cambodia",
+  "Cameroon",
+  "Canada",
+  "Cape Verde",
+  "Central African Republic",
+  "Chad",
+  "Chile",
+  "China",
+  "Colombia",
+  "Comoros",
+  "Congo",
+  "Costa Rica",
+  "Croatia",
+  "Cuba",
+  "Cyprus",
+  "Czech Republic",
+  "Czechia",
+  "Denmark",
+  "Djibouti",
+  "Dominica",
+  "Dominican Republic",
+  "East Timor",
+  "Ecuador",
+  "Egypt",
+  "El Salvador",
+  "Equatorial Guinea",
+  "Eritrea",
+  "Estonia",
+  "Ethiopia",
+  "Fiji",
+  "Finland",
+  "France",
+  "Gabon",
+  "Gambia",
+  "Georgia",
+  "Germany",
+  "Ghana",
+  "Greece",
+  "Grenada",
+  "Guatemala",
+  "Guinea",
+  "Guinea-Bissau",
+  "Guyana",
+  "Haiti",
+  "Honduras",
+  "Hungary",
+  "Iceland",
+  "India",
+  "Indonesia",
+  "Iran",
+  "Iraq",
+  "Ireland",
+  "Israel",
+  "Italy",
+  "Jamaica",
+  "Japan",
+  "Jordan",
+  "Kazakhstan",
+  "Kenya",
+  "Kiribati",
+  "Kuwait",
+  "Kyrgyzstan",
+  "Laos",
+  "Latvia",
+  "Lebanon",
+  "Lesotho",
+  "Liberia",
+  "Libya",
+  "Liechtenstein",
+  "Lithuania",
+  "Luxembourg",
+  "Madagascar",
+  "Malawi",
+  "Malaysia",
+  "Maldives",
+  "Mali",
+  "Malta",
+  "Marshall Islands",
+  "Mauritania",
+  "Mauritius",
+  "Mexico",
+  "Micronesia",
+  "Moldova",
+  "Monaco",
+  "Mongolia",
+  "Montenegro",
+  "Morocco",
+  "Mozambique",
+  "Myanmar",
+  "Namibia",
+  "Nauru",
+  "Nepal",
+  "Netherlands",
+  "New Zealand",
+  "Nicaragua",
+  "Niger",
+  "Nigeria",
+  "North Korea",
+  "North Macedonia",
+  "Norway",
+  "Oman",
+  "Pakistan",
+  "Palau",
+  "Palestine",
+  "Panama",
+  "Papua New Guinea",
+  "Paraguay",
+  "Peru",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Qatar",
+  "Romania",
+  "Russia",
+  "Rwanda",
+  "Saint Kitts and Nevis",
+  "Saint Lucia",
+  "Saint Vincent and the Grenadines",
+  "Samoa",
+  "San Marino",
+  "Sao Tome and Principe",
+  "Saudi Arabia",
+  "Senegal",
+  "Serbia",
+  "Seychelles",
+  "Sierra Leone",
+  "Singapore",
+  "Slovakia",
+  "Slovenia",
+  "Solomon Islands",
+  "Somalia",
+  "South Africa",
+  "South Korea",
+  "South Sudan",
+  "Spain",
+  "Sri Lanka",
+  "Sudan",
+  "Suriname",
+  "Sweden",
+  "Switzerland",
+  "Syria",
+  "Taiwan",
+  "Tajikistan",
+  "Tanzania",
+  "Thailand",
+  "Togo",
+  "Tonga",
+  "Trinidad and Tobago",
+  "Tunisia",
+  "Turkey",
+  "Turkmenistan",
+  "Tuvalu",
+  "Uganda",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Uruguay",
+  "Uzbekistan",
+  "Vanuatu",
+  "Vatican City",
+  "Venezuela",
+  "Vietnam",
+  "Yemen",
+  "Zambia",
+  "Zimbabwe",
 ].sort();
 
 const CITIES_BY_COUNTRY: Record<string, string[]> = {
-  "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"],
-  "United Kingdom": ["London", "Manchester", "Birmingham", "Leeds", "Glasgow", "Liverpool", "Newcastle", "Sheffield", "Bristol", "Edinburgh"],
-  "Canada": ["Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa", "Edmonton", "Mississauga", "Winnipeg", "Quebec City", "Hamilton"],
-  "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Gold Coast", "Canberra", "Newcastle", "Logan City", "Parramatta"],
-  "Germany": ["Berlin", "Munich", "Frankfurt", "Cologne", "Hamburg", "Dusseldorf", "Dortmund", "Essen", "Leipzig", "Dresden"],
-  "France": ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier", "Bordeaux", "Lille"],
-  "India": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow"],
-  "Japan": ["Tokyo", "Yokohama", "Osaka", "Kobe", "Kyoto", "Kawasaki", "Saitama", "Hiroshima", "Fukuoka", "Nagoya"],
-  "Brazil": ["Sao Paulo", "Rio de Janeiro", "Brasilia", "Salvador", "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba", "Recife", "Porto Alegre"],
+  "United States": [
+    "New York",
+    "Los Angeles",
+    "Chicago",
+    "Houston",
+    "Phoenix",
+    "Philadelphia",
+    "San Antonio",
+    "San Diego",
+    "Dallas",
+    "San Jose",
+  ],
+  "United Kingdom": [
+    "London",
+    "Manchester",
+    "Birmingham",
+    "Leeds",
+    "Glasgow",
+    "Liverpool",
+    "Newcastle",
+    "Sheffield",
+    "Bristol",
+    "Edinburgh",
+  ],
+  Canada: [
+    "Toronto",
+    "Vancouver",
+    "Montreal",
+    "Calgary",
+    "Ottawa",
+    "Edmonton",
+    "Mississauga",
+    "Winnipeg",
+    "Quebec City",
+    "Hamilton",
+  ],
+  Australia: [
+    "Sydney",
+    "Melbourne",
+    "Brisbane",
+    "Perth",
+    "Adelaide",
+    "Gold Coast",
+    "Canberra",
+    "Newcastle",
+    "Logan City",
+    "Parramatta",
+  ],
+  Germany: [
+    "Berlin",
+    "Munich",
+    "Frankfurt",
+    "Cologne",
+    "Hamburg",
+    "Dusseldorf",
+    "Dortmund",
+    "Essen",
+    "Leipzig",
+    "Dresden",
+  ],
+  France: [
+    "Paris",
+    "Marseille",
+    "Lyon",
+    "Toulouse",
+    "Nice",
+    "Nantes",
+    "Strasbourg",
+    "Montpellier",
+    "Bordeaux",
+    "Lille",
+  ],
+  India: [
+    "Mumbai",
+    "Delhi",
+    "Bangalore",
+    "Hyderabad",
+    "Chennai",
+    "Kolkata",
+    "Pune",
+    "Ahmedabad",
+    "Jaipur",
+    "Lucknow",
+  ],
+  Japan: [
+    "Tokyo",
+    "Yokohama",
+    "Osaka",
+    "Kobe",
+    "Kyoto",
+    "Kawasaki",
+    "Saitama",
+    "Hiroshima",
+    "Fukuoka",
+    "Nagoya",
+  ],
+  Brazil: [
+    "Sao Paulo",
+    "Rio de Janeiro",
+    "Brasilia",
+    "Salvador",
+    "Fortaleza",
+    "Belo Horizonte",
+    "Manaus",
+    "Curitiba",
+    "Recife",
+    "Porto Alegre",
+  ],
 };
 
 export default function Index() {
@@ -76,17 +343,17 @@ export default function Index() {
   const [serverSearch, setServerSearch] = useState("");
 
   const availableCities = selectedCountry
-    ? (CITIES_BY_COUNTRY[selectedCountry] || []).filter(city =>
-        city.toLowerCase().includes(citySearch.toLowerCase())
+    ? (CITIES_BY_COUNTRY[selectedCountry] || []).filter((city) =>
+        city.toLowerCase().includes(citySearch.toLowerCase()),
       )
     : [];
 
-  const filteredCountries = COUNTRIES.filter(country =>
-    country.toLowerCase().includes(countrySearch.toLowerCase())
+  const filteredCountries = COUNTRIES.filter((country) =>
+    country.toLowerCase().includes(countrySearch.toLowerCase()),
   );
 
-  const filteredServers = servers.filter(server =>
-    server.toLowerCase().includes(serverSearch.toLowerCase())
+  const filteredServers = servers.filter((server) =>
+    server.toLowerCase().includes(serverSearch.toLowerCase()),
   );
 
   useEffect(() => {
@@ -118,22 +385,23 @@ export default function Index() {
     let filtered = posts;
 
     if (searchQuery) {
-      filtered = filtered.filter(post =>
-        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.description.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.description.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
     if (selectedCountry) {
-      filtered = filtered.filter(post => post.country === selectedCountry);
+      filtered = filtered.filter((post) => post.country === selectedCountry);
     }
 
     if (selectedCity) {
-      filtered = filtered.filter(post => post.city === selectedCity);
+      filtered = filtered.filter((post) => post.city === selectedCity);
     }
 
     if (selectedServer) {
-      filtered = filtered.filter(post => post.server === selectedServer);
+      filtered = filtered.filter((post) => post.server === selectedServer);
     }
 
     setFilteredPosts(filtered);
@@ -188,7 +456,9 @@ export default function Index() {
                   </label>
                   <input
                     type="text"
-                    placeholder={selectedCountry ? selectedCountry : "Select country..."}
+                    placeholder={
+                      selectedCountry ? selectedCountry : "Select country..."
+                    }
                     value={countrySearch}
                     onChange={(e) => setCountrySearch(e.target.value)}
                     className="w-full px-4 py-3 bg-card border border-border hover:border-accent/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm transition-colors"
@@ -210,7 +480,9 @@ export default function Index() {
                           </button>
                         ))
                       ) : (
-                        <div className="px-4 py-2 text-muted-foreground text-sm">No countries found</div>
+                        <div className="px-4 py-2 text-muted-foreground text-sm">
+                          No countries found
+                        </div>
                       )}
                     </div>
                   )}
@@ -230,93 +502,99 @@ export default function Index() {
 
                 {/* City Dropdown */}
                 <div className="relative group">
-                    <label className="text-sm font-bold text-foreground block mb-2">
-                      By City
-                    </label>
-                    <input
-                      type="text"
-                      placeholder={selectedCity ? selectedCity : "Select city..."}
-                      value={citySearch}
-                      onChange={(e) => setCitySearch(e.target.value)}
-                      className="w-full px-4 py-3 bg-card border border-border hover:border-accent/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm transition-colors"
-                    />
-                    {citySearch && (
-                      <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg z-50 max-h-48 overflow-y-auto shadow-lg">
-                        {availableCities.length > 0 ? (
-                          availableCities.map((city) => (
-                            <button
-                              key={city}
-                              onClick={() => {
-                                setSelectedCity(city);
-                                setCitySearch("");
-                              }}
-                              className="w-full text-left px-4 py-2 hover:bg-accent/20 text-foreground text-sm transition-colors"
-                            >
-                              {city}
-                            </button>
-                          ))
-                        ) : (
-                          <div className="px-4 py-2 text-muted-foreground text-sm">No cities found</div>
-                        )}
-                      </div>
-                    )}
-                    {selectedCity && (
-                      <button
-                        onClick={() => {
-                          setSelectedCity("");
-                          setCitySearch("");
-                        }}
-                        className="absolute top-3 right-3 text-accent hover:text-accent/80 transition-colors"
-                      >
-                        ✕
-                      </button>
-                    )}
-                  </div>
+                  <label className="text-sm font-bold text-foreground block mb-2">
+                    By City
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={selectedCity ? selectedCity : "Select city..."}
+                    value={citySearch}
+                    onChange={(e) => setCitySearch(e.target.value)}
+                    className="w-full px-4 py-3 bg-card border border-border hover:border-accent/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm transition-colors"
+                  />
+                  {citySearch && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg z-50 max-h-48 overflow-y-auto shadow-lg">
+                      {availableCities.length > 0 ? (
+                        availableCities.map((city) => (
+                          <button
+                            key={city}
+                            onClick={() => {
+                              setSelectedCity(city);
+                              setCitySearch("");
+                            }}
+                            className="w-full text-left px-4 py-2 hover:bg-accent/20 text-foreground text-sm transition-colors"
+                          >
+                            {city}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="px-4 py-2 text-muted-foreground text-sm">
+                          No cities found
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {selectedCity && (
+                    <button
+                      onClick={() => {
+                        setSelectedCity("");
+                        setCitySearch("");
+                      }}
+                      className="absolute top-3 right-3 text-accent hover:text-accent/80 transition-colors"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
 
                 {/* Server Dropdown */}
                 <div className="relative group">
-                    <label className="text-sm font-bold text-foreground block mb-2">
-                      By Server
-                    </label>
-                    <input
-                      type="text"
-                      placeholder={selectedServer ? selectedServer : "Select server..."}
-                      value={serverSearch}
-                      onChange={(e) => setServerSearch(e.target.value)}
-                      className="w-full px-4 py-3 bg-card border border-border hover:border-accent/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm transition-colors"
-                    />
-                    {serverSearch && (
-                      <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg z-50 max-h-48 overflow-y-auto shadow-lg">
-                        {filteredServers.length > 0 ? (
-                          filteredServers.map((server) => (
-                            <button
-                              key={server}
-                              onClick={() => {
-                                setSelectedServer(server);
-                                setServerSearch("");
-                              }}
-                              className="w-full text-left px-4 py-2 hover:bg-accent/20 text-foreground text-sm transition-colors"
-                            >
-                              {server}
-                            </button>
-                          ))
-                        ) : (
-                          <div className="px-4 py-2 text-muted-foreground text-sm">No servers found</div>
-                        )}
-                      </div>
-                    )}
-                    {selectedServer && (
-                      <button
-                        onClick={() => {
-                          setSelectedServer("");
-                          setServerSearch("");
-                        }}
-                        className="absolute top-3 right-3 text-accent hover:text-accent/80 transition-colors"
-                      >
-                        ✕
-                      </button>
-                    )}
-                  </div>
+                  <label className="text-sm font-bold text-foreground block mb-2">
+                    By Server
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={
+                      selectedServer ? selectedServer : "Select server..."
+                    }
+                    value={serverSearch}
+                    onChange={(e) => setServerSearch(e.target.value)}
+                    className="w-full px-4 py-3 bg-card border border-border hover:border-accent/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm transition-colors"
+                  />
+                  {serverSearch && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg z-50 max-h-48 overflow-y-auto shadow-lg">
+                      {filteredServers.length > 0 ? (
+                        filteredServers.map((server) => (
+                          <button
+                            key={server}
+                            onClick={() => {
+                              setSelectedServer(server);
+                              setServerSearch("");
+                            }}
+                            className="w-full text-left px-4 py-2 hover:bg-accent/20 text-foreground text-sm transition-colors"
+                          >
+                            {server}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="px-4 py-2 text-muted-foreground text-sm">
+                          No servers found
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {selectedServer && (
+                    <button
+                      onClick={() => {
+                        setSelectedServer("");
+                        setServerSearch("");
+                      }}
+                      className="absolute top-3 right-3 text-accent hover:text-accent/80 transition-colors"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -326,7 +604,9 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 py-16">
           <div className="mb-12">
             <h2 className="text-5xl md:text-6xl font-black mb-3">
-              {filteredPosts.length === 0 ? "No Posts Found" : "🔥 Hot & Recent Posts"}
+              {filteredPosts.length === 0
+                ? "No Posts Found"
+                : "🔥 Hot & Recent Posts"}
             </h2>
             <p className="text-muted-foreground">
               {filteredPosts.length === 0
@@ -392,23 +672,27 @@ export default function Index() {
                     ← Previous
                   </button>
                   <div className="flex items-center gap-1.5">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={cn(
-                          "w-10 h-10 rounded-lg font-medium transition-all text-sm",
-                          currentPage === page
-                            ? "bg-accent text-accent-foreground"
-                            : "bg-card border border-border hover:border-accent text-foreground"
-                        )}
-                      >
-                        {page}
-                      </button>
-                    ))}
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={cn(
+                            "w-10 h-10 rounded-lg font-medium transition-all text-sm",
+                            currentPage === page
+                              ? "bg-accent text-accent-foreground"
+                              : "bg-card border border-border hover:border-accent text-foreground",
+                          )}
+                        >
+                          {page}
+                        </button>
+                      ),
+                    )}
                   </div>
                   <button
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    onClick={() =>
+                      setCurrentPage(Math.min(totalPages, currentPage + 1))
+                    }
                     disabled={currentPage === totalPages}
                     className="px-4 py-2 bg-accent text-accent-foreground font-medium rounded-lg hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                   >

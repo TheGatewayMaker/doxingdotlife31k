@@ -1,5 +1,11 @@
 import { RequestHandler } from "express";
-import { writeFileSync, mkdirSync, existsSync, readFileSync, appendFileSync } from "fs";
+import {
+  writeFileSync,
+  mkdirSync,
+  existsSync,
+  readFileSync,
+  appendFileSync,
+} from "fs";
 import { join } from "path";
 
 interface UploadRequest {
@@ -12,7 +18,8 @@ interface UploadRequest {
 
 export const handleUpload: RequestHandler = (req, res) => {
   try {
-    const { title, description, country, city, server } = req.body as UploadRequest;
+    const { title, description, country, city, server } =
+      req.body as UploadRequest;
     const file = req.file;
 
     if (!title || !description || !file) {

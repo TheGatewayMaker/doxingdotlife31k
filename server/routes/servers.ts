@@ -14,7 +14,7 @@ export const handleGetServers: RequestHandler = (req, res) => {
         ...content
           .split("\n")
           .map((line) => line.trim())
-          .filter((line) => line)
+          .filter((line) => line),
       );
     }
 

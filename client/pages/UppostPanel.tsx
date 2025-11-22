@@ -130,12 +130,18 @@ export default function UppostPanel() {
               <div className="mb-2 w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
                 <span className="font-black text-accent-foreground">⚙️</span>
               </div>
-              <h1 className="text-4xl font-black mb-2 text-foreground">Uppost Panel</h1>
-              <p className="text-muted-foreground mb-8">Admin access required to manage posts</p>
+              <h1 className="text-4xl font-black mb-2 text-foreground">
+                Uppost Panel
+              </h1>
+              <p className="text-muted-foreground mb-8">
+                Admin access required to manage posts
+              </p>
 
               <form onSubmit={handleLogin} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-bold mb-2 text-foreground">Username</label>
+                  <label className="block text-sm font-bold mb-2 text-foreground">
+                    Username
+                  </label>
                   <input
                     type="text"
                     value={loginUsername}
@@ -147,7 +153,9 @@ export default function UppostPanel() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold mb-2 text-foreground">Password</label>
+                  <label className="block text-sm font-bold mb-2 text-foreground">
+                    Password
+                  </label>
                   <input
                     type="password"
                     value={loginPassword}
@@ -186,8 +194,13 @@ export default function UppostPanel() {
         <div className="max-w-4xl mx-auto px-4 py-12">
           <div className="flex justify-between items-start mb-10">
             <div>
-              <h1 className="text-5xl md:text-6xl font-black mb-2">📤 Uppost Panel</h1>
-              <p className="text-muted-foreground">Logged in as: <span className="text-accent font-medium">{auth.username}</span></p>
+              <h1 className="text-5xl md:text-6xl font-black mb-2">
+                📤 Uppost Panel
+              </h1>
+              <p className="text-muted-foreground">
+                Logged in as:{" "}
+                <span className="text-accent font-medium">{auth.username}</span>
+              </p>
             </div>
             <button
               onClick={handleLogout}
@@ -198,7 +211,10 @@ export default function UppostPanel() {
             </button>
           </div>
 
-          <form onSubmit={handleUpload} className="bg-card border border-border rounded-xl p-10 space-y-8">
+          <form
+            onSubmit={handleUpload}
+            className="bg-card border border-border rounded-xl p-10 space-y-8"
+          >
             {/* Title */}
             <div>
               <label className="block text-sm font-bold mb-3 text-foreground">
@@ -231,7 +247,9 @@ export default function UppostPanel() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Country */}
               <div>
-                <label className="block text-sm font-bold mb-3 text-foreground">Country</label>
+                <label className="block text-sm font-bold mb-3 text-foreground">
+                  Country
+                </label>
                 <input
                   type="text"
                   value={country}
@@ -243,7 +261,9 @@ export default function UppostPanel() {
 
               {/* City */}
               <div>
-                <label className="block text-sm font-bold mb-3 text-foreground">City</label>
+                <label className="block text-sm font-bold mb-3 text-foreground">
+                  City
+                </label>
                 <input
                   type="text"
                   value={city}
@@ -255,7 +275,9 @@ export default function UppostPanel() {
 
               {/* Server */}
               <div>
-                <label className="block text-sm font-bold mb-3 text-foreground">Server Name</label>
+                <label className="block text-sm font-bold mb-3 text-foreground">
+                  Server Name
+                </label>
                 <input
                   type="text"
                   value={server}
@@ -283,15 +305,20 @@ export default function UppostPanel() {
                   {media ? (
                     <div className="space-y-3">
                       <div className="text-3xl">✅</div>
-                      <p className="text-sm font-bold text-accent">{media.name}</p>
+                      <p className="text-sm font-bold text-accent">
+                        {media.name}
+                      </p>
                       <p className="text-xs text-muted-foreground">
-                        {(media.size / 1024 / 1024).toFixed(2)} MB • Ready to upload
+                        {(media.size / 1024 / 1024).toFixed(2)} MB • Ready to
+                        upload
                       </p>
                     </div>
                   ) : (
                     <div className="space-y-3">
                       <Upload className="w-10 h-10 mx-auto text-muted-foreground" />
-                      <p className="text-sm font-bold text-foreground">Click to upload media</p>
+                      <p className="text-sm font-bold text-foreground">
+                        Click to upload media
+                      </p>
                       <p className="text-xs text-muted-foreground">
                         Images and videos supported (Max 100MB)
                       </p>

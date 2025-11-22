@@ -25,10 +25,7 @@ export const handleGetPosts: RequestHandler = (req, res) => {
 
     const folders = readdirSync(dataDir).filter((name) => {
       const path = join(dataDir, name);
-      return (
-        !name.includes(".") &&
-        require("fs").statSync(path).isDirectory()
-      );
+      return !name.includes(".") && require("fs").statSync(path).isDirectory();
     });
 
     for (const folder of folders) {
@@ -49,7 +46,7 @@ export const handleGetPosts: RequestHandler = (req, res) => {
 
     posts.sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 
     res.json({
