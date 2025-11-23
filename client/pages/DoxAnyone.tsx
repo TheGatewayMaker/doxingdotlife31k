@@ -28,29 +28,29 @@ export default function DoxAnyone() {
               Service Pricing
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-              <div className="bg-muted/50 rounded-lg p-5 sm:p-6 border border-border">
-                <p className="text-xs sm:text-sm font-semibold text-accent mb-2">
+              <div className="bg-slate-900 rounded-lg p-5 sm:p-6 border border-yellow-500">
+                <p className="text-xs sm:text-sm font-semibold text-yellow-500 mb-2">
                   PAKISTAN
                 </p>
-                <p className="text-2xl sm:text-3xl font-black text-foreground">
+                <p className="text-2xl sm:text-3xl font-black text-yellow-500">
                   299
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground">PKR</p>
               </div>
-              <div className="bg-muted/50 rounded-lg p-5 sm:p-6 border border-border">
-                <p className="text-xs sm:text-sm font-semibold text-accent mb-2">
+              <div className="bg-slate-900 rounded-lg p-5 sm:p-6 border border-yellow-500">
+                <p className="text-xs sm:text-sm font-semibold text-yellow-500 mb-2">
                   UNITED STATES
                 </p>
-                <p className="text-2xl sm:text-3xl font-black text-foreground">
+                <p className="text-2xl sm:text-3xl font-black text-yellow-500">
                   1.10
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground">USD</p>
               </div>
-              <div className="bg-muted/50 rounded-lg p-5 sm:p-6 border border-border">
-                <p className="text-xs sm:text-sm font-semibold text-accent mb-2">
+              <div className="bg-slate-900 rounded-lg p-5 sm:p-6 border border-yellow-500">
+                <p className="text-xs sm:text-sm font-semibold text-yellow-500 mb-2">
                   INDIA
                 </p>
-                <p className="text-2xl sm:text-3xl font-black text-foreground">
+                <p className="text-2xl sm:text-3xl font-black text-yellow-500">
                   99
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground">INR</p>
