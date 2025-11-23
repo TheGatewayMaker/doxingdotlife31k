@@ -201,7 +201,9 @@ export default function AdminPanel() {
 
   const handlePostUpdated = (updatedPost: Post) => {
     setPosts((prevPosts) =>
-      prevPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post)),
+      prevPosts.map((post) =>
+        post.id === updatedPost.id ? updatedPost : post,
+      ),
     );
     toast.success("Post updated successfully");
   };

@@ -23,11 +23,8 @@ export const handleDeletePost: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting post:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : String(error);
-    res
-      .status(500)
-      .json({ error: `Failed to delete post: ${errorMessage}` });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    res.status(500).json({ error: `Failed to delete post: ${errorMessage}` });
   }
 };
 
@@ -53,8 +50,7 @@ export const handleDeleteMediaFile: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting media file:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     res.status(500).json({
       error: `Failed to delete media file: ${errorMessage}`,
     });
@@ -100,8 +96,7 @@ export const handleUpdatePost: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating post:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     res.status(500).json({ error: `Failed to update post: ${errorMessage}` });
   }
 };

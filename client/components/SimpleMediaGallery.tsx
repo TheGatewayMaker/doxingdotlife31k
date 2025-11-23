@@ -106,8 +106,12 @@ export default function SimpleMediaGallery({
 
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                {isImg && <span className="text-white text-sm font-semibold">View</span>}
-                {isVid && <span className="text-white text-sm font-semibold">Play</span>}
+                {isImg && (
+                  <span className="text-white text-sm font-semibold">View</span>
+                )}
+                {isVid && (
+                  <span className="text-white text-sm font-semibold">Play</span>
+                )}
               </div>
             </a>
           );
@@ -183,7 +187,9 @@ export default function SimpleMediaGallery({
               <p className="text-sm font-medium text-foreground truncate">
                 {currentMedia.name}
               </p>
-              <p className="text-xs text-muted-foreground">{currentMedia.type}</p>
+              <p className="text-xs text-muted-foreground">
+                {currentMedia.type}
+              </p>
             </div>
             <a
               href={currentMedia.url}

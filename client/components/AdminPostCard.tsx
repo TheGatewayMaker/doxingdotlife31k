@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Post } from "@shared/api";
-import { GlobeIcon, MapPinIcon, ServerIcon, TrashIcon, EditIcon } from "./Icons";
+import {
+  GlobeIcon,
+  MapPinIcon,
+  ServerIcon,
+  TrashIcon,
+  EditIcon,
+} from "./Icons";
 import EditPostModal from "./EditPostModal";
 import MediaManagerModal from "./MediaManagerModal";
 
@@ -37,10 +43,7 @@ export default function AdminPostCard({
                 const img = e.target as HTMLImageElement;
                 img.style.display = "none";
                 const parent = img.parentElement;
-                if (
-                  parent &&
-                  !parent.querySelector("[data-error-shown]")
-                ) {
+                if (parent && !parent.querySelector("[data-error-shown]")) {
                   const errorDiv = document.createElement("div");
                   errorDiv.setAttribute("data-error-shown", "true");
                   errorDiv.className =
