@@ -12,6 +12,7 @@ interface AuthState {
 }
 
 export default function UppostPanel() {
+  const navigate = useNavigate();
   const [auth, setAuth] = useState<AuthState>({
     isAuthenticated: false,
     username: "",
@@ -21,6 +22,18 @@ export default function UppostPanel() {
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem("auth_token");
+    const savedUsername = localStorage.getItem("auth_username");
+    if (savedToken && savedUsername) {
+      setAuth({
+        isAuthenticated: true,
+        username: savedUsername,
+        token: savedToken,
+      });
+    }
+  }, []);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
