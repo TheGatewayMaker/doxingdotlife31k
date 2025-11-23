@@ -623,15 +623,30 @@ export default function Index() {
                     style={{ animationDelay: `${idx * 0.05}s` }}
                   >
                     {post.thumbnail && (
-                      <div className="w-full h-40 bg-muted overflow-hidden">
+                      <div className="w-full h-40 bg-muted overflow-hidden flex items-center justify-center">
                         <img
                           src={post.thumbnail}
                           alt={post.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src =
-                              'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="160"%3E%3Crect fill="%23333" width="400" height="160"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-size="16"%3EImage not available%3C/text%3E%3C/svg%3E';
+                            const img = e.target as HTMLImageElement;
+                            img.style.display = "none";
+                            const parent = img.parentElement;
+                            if (
+                              parent &&
+                              !parent.querySelector("[data-error-shown]")
+                            ) {
+                              const errorDiv = document.createElement("div");
+                              errorDiv.setAttribute("data-error-shown", "true");
+                              errorDiv.className =
+                                "text-center text-muted-foreground flex flex-col items-center justify-center gap-2";
+                              errorDiv.innerHTML =
+                                '<div class="text-3xl">🖼️</div><div class="text-xs">Image unavailable</div>';
+                              parent.appendChild(errorDiv);
+                            }
                           }}
+                          crossOrigin="anonymous"
+                          loading="lazy"
                         />
                       </div>
                     )}

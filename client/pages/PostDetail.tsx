@@ -12,6 +12,7 @@ export default function PostDetail() {
   const [post, setPosts] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [thumbnailError, setThumbnailError] = useState(false);
 
   useEffect(() => {
     const loadPost = async () => {
@@ -96,17 +97,25 @@ export default function PostDetail() {
             style={{ animationDelay: "0.1s" }}
           >
             {/* Thumbnail */}
-            {post.thumbnail && (
+            {post.thumbnail && !thumbnailError && (
               <div className="w-full h-96 bg-muted overflow-hidden">
                 <img
                   src={post.thumbnail}
                   alt={post.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="384"%3E%3Crect fill="%23333" width="800" height="384"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-size="20"%3EImage not available%3C/text%3E%3C/svg%3E';
-                  }}
+                  onError={() => setThumbnailError(true)}
+                  crossOrigin="anonymous"
                 />
+              </div>
+            )}
+            {thumbnailError && (
+              <div className="w-full h-96 bg-muted flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-7xl mb-4">🖼️</div>
+                  <p className="text-muted-foreground text-lg">
+                    Thumbnail unavailable
+                  </p>
+                </div>
               </div>
             )}
 
