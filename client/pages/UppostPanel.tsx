@@ -223,20 +223,20 @@ export default function UppostPanel() {
     return (
       <div className="min-h-screen bg-background text-foreground flex flex-col animate-fadeIn">
         <Header />
-        <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="flex-1 flex items-center justify-center px-4 py-12 bg-gradient-to-br from-background via-muted/20 to-background">
           <div
             className="w-full max-w-md animate-fadeIn"
             style={{ animationDelay: "0.1s" }}
           >
-            <div className="bg-card border border-border rounded-xl p-10 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="mb-2 w-10 h-10 bg-accent rounded-lg flex items-center justify-center shadow-md">
-                <UploadIcon className="w-5 h-5 text-accent-foreground" />
+            <div className="bg-card border border-border rounded-xl p-10 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+              <div className="mb-4 w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-lg flex items-center justify-center shadow-lg">
+                <UploadIcon className="w-6 h-6 text-accent-foreground" />
               </div>
               <h1 className="text-4xl font-black mb-2 text-foreground">
-                Uppost Panel
+                Upload Portal
               </h1>
-              <p className="text-muted-foreground mb-8">
-                Admin access required to manage posts
+              <p className="text-muted-foreground mb-8 text-sm">
+                Secure admin authentication required to create and manage posts
               </p>
 
               <form onSubmit={handleLogin} className="space-y-5">
