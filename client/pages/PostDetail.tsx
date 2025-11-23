@@ -101,6 +101,10 @@ export default function PostDetail() {
                   src={post.thumbnail}
                   alt={post.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src =
+                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="384"%3E%3Crect fill="%23333" width="800" height="384"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-size="20"%3EImage not available%3C/text%3E%3C/svg%3E';
+                  }}
                 />
               </div>
             )}
@@ -165,24 +169,74 @@ export default function PostDetail() {
                             src={file.url}
                             alt={file.name}
                             className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src =
+                                'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="256"%3E%3Crect fill="%23333" width="400" height="256"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-size="18"%3EFailed to load image%3C/text%3E%3C/svg%3E';
+                            }}
                           />
                         ) : file.type.startsWith("video/") ? (
-                          <video
-                            src={file.url}
-                            controls
-                            preload="metadata"
-                            crossOrigin="anonymous"
-                            className="w-full h-64 bg-muted"
-                          />
+                          <div className="relative w-full h-64 bg-muted flex items-center justify-center overflow-hidden">
+                            <video
+                              controls
+                              controlsList="nodownload"
+                              preload="metadata"
+                              crossOrigin="anonymous"
+                              className="w-full h-full object-contain"
+                              onError={(e) => {
+                                console.error(
+                                  "Video error for",
+                                  file.name,
+                                  ":",
+                                  e,
+                                );
+                                const videoElement =
+                                  e.target as HTMLVideoElement;
+                                videoElement.style.display = "none";
+                                const parent = videoElement.parentElement;
+                                if (parent) {
+                                  const errorDiv =
+                                    document.createElement("div");
+                                  errorDiv.className =
+                                    "w-full h-64 bg-muted flex flex-col items-center justify-center gap-4 p-4";
+                                  errorDiv.innerHTML = `
+                                    <div class="text-center">
+                                      <p class="text-muted-foreground text-sm mb-2">Video format not supported</p>
+                                      <a href="${file.url}" download="${file.name}" class="text-accent hover:underline text-sm">Download video</a>
+                                    </div>
+                                  `;
+                                  parent.appendChild(errorDiv);
+                                }
+                              }}
+                            >
+                              <source src={file.url} type={file.type} />
+                              <p className="p-4 text-muted-foreground text-center text-sm">
+                                Video format not supported in your browser.{" "}
+                                <a
+                                  href={file.url}
+                                  download={file.name}
+                                  className="text-accent hover:underline"
+                                >
+                                  Download video
+                                </a>
+                              </p>
+                            </video>
+                          </div>
                         ) : file.type.startsWith("audio/") ? (
                           <div className="w-full h-64 bg-muted flex items-center justify-center">
                             <audio
-                              src={file.url}
                               controls
                               preload="metadata"
                               crossOrigin="anonymous"
                               className="w-full"
-                            />
+                              onError={(e) => {
+                                console.error("Audio error:", e);
+                              }}
+                            >
+                              <source src={file.url} type={file.type} />
+                              <p className="text-muted-foreground">
+                                Your browser doesn't support HTML5 audio.
+                              </p>
+                            </audio>
                           </div>
                         ) : (
                           <div className="w-full h-64 bg-muted flex items-center justify-center">
