@@ -123,14 +123,14 @@ export default function Header() {
                     <Link
                       to="/uppostpanel"
                       onClick={closeSidebar}
-                      className="flex items-center gap-3 w-full px-4 py-3 text-foreground font-semibold hover:bg-muted rounded-lg transition-colors"
+                      className="flex items-center gap-3 w-full px-4 py-3 text-gray-300 font-semibold hover:bg-slate-700 hover:text-white rounded-lg transition-colors"
                     >
                       📤 Upload
                     </Link>
                     <Link
                       to="/admin-panel"
                       onClick={closeSidebar}
-                      className="flex items-center gap-3 w-full px-4 py-3 text-amber-500 font-semibold hover:bg-amber-500/10 rounded-lg transition-colors bg-amber-500/5"
+                      className="flex items-center gap-3 w-full px-4 py-3 text-white font-semibold hover:bg-yellow-600 rounded-lg transition-colors bg-yellow-600/20"
                     >
                       ⚙️ Admin Panel
                     </Link>
@@ -138,10 +138,10 @@ export default function Header() {
                 )}
               </nav>
               {isAuthenticated && (
-                <div className="p-4 border-t border-border">
+                <div className="p-4 border-t border-slate-700">
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-destructive/10 text-destructive font-semibold rounded-lg hover:bg-destructive hover:text-destructive-foreground transition-all"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all"
                   >
                     <LogOut className="w-4 h-4" />
                     Logout
