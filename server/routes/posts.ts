@@ -17,6 +17,11 @@ const getMimeType = (fileName: string): string => {
     gif: "image/gif",
     webp: "image/webp",
     svg: "image/svg+xml",
+    bmp: "image/bmp",
+    ico: "image/x-icon",
+    tiff: "image/tiff",
+    tif: "image/tiff",
+    jpe: "image/jpeg",
 
     // Videos
     mp4: "video/mp4",
@@ -28,6 +33,11 @@ const getMimeType = (fileName: string): string => {
     m4v: "video/x-m4v",
     mpg: "video/mpeg",
     mpeg: "video/mpeg",
+    mts: "video/mp2t",
+    m2ts: "video/mp2t",
+    wmv: "video/x-ms-wmv",
+    mxf: "video/mxf",
+    ogv: "video/ogg",
 
     // Audio
     mp3: "audio/mpeg",
@@ -36,6 +46,10 @@ const getMimeType = (fileName: string): string => {
     aac: "audio/aac",
     flac: "audio/flac",
     ogg: "audio/ogg",
+    opus: "audio/opus",
+    wma: "audio/x-ms-wma",
+    aiff: "audio/aiff",
+    aif: "audio/aiff",
 
     // Other
     json: "application/json",
