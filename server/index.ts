@@ -40,19 +40,6 @@ export function createServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-  // Debug middleware to log incoming requests
-  app.use((req, res, next) => {
-    if (req.path === "/api/auth/login") {
-      console.log(
-        `[${new Date().toISOString()}] ${req.method} ${req.path} - Content-Type: ${req.get("Content-Type")}`,
-      );
-      console.log(
-        `Body type: ${typeof req.body}, Body:`,
-        JSON.stringify(req.body).substring(0, 100),
-      );
-    }
-    next();
-  });
 
   // Health check endpoint
   app.get("/api/health", (_req, res) => {
