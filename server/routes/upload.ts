@@ -4,6 +4,7 @@ import {
   uploadPostMetadata,
   getServersList,
   updateServersList,
+  uploadPostMetadataWithThumbnail,
 } from "../utils/r2-storage";
 
 interface UploadRequest {
@@ -18,22 +19,35 @@ export const handleUpload: RequestHandler = async (req, res) => {
   try {
     const { title, description, country, city, server } =
       req.body as UploadRequest;
-    const file = req.file;
+    const files = req.files as
+      | { [fieldname: string]: Express.Multer.File[] }
+      | undefined;
 
-    if (!title || !description || !file) {
+    if (!title || !description || !files?.media || !files?.thumbnail) {
       res.status(400).json({ error: "Missing required fields" });
       return;
     }
 
+    const mediaFile = files.media[0];
+    const thumbnailFile = files.thumbnail[0];
+
     const postId = Date.now().toString();
-    const mediaFileName = file.originalname || `${Date.now()}-media`;
+    const mediaFileName = mediaFile.originalname || `${Date.now()}-media`;
+    const thumbnailFileName = `thumbnail-${Date.now()}`;
 
     try {
       const mediaUrl = await uploadMediaFile(
         postId,
         mediaFileName,
-        file.buffer,
-        file.mimetype || "application/octet-stream",
+        mediaFile.buffer,
+        mediaFile.mimetype || "application/octet-stream",
+      );
+
+      const thumbnailUrl = await uploadMediaFile(
+        postId,
+        thumbnailFileName,
+        thumbnailFile.buffer,
+        thumbnailFile.mimetype || "image/jpeg",
       );
 
       const postMetadata = {
@@ -47,7 +61,7 @@ export const handleUpload: RequestHandler = async (req, res) => {
         createdAt: new Date().toISOString(),
       };
 
-      await uploadPostMetadata(postId, postMetadata);
+      await uploadPostMetadataWithThumbnail(postId, postMetadata, thumbnailUrl);
 
       if (server && server.trim()) {
         try {
@@ -67,9 +81,9 @@ export const handleUpload: RequestHandler = async (req, res) => {
       });
     } catch (r2Error) {
       console.error("R2 upload error:", r2Error);
-      res
-        .status(500)
-        .json({ error: "Upload to R2 failed - check environment variables" });
+      const errorMessage =
+        r2Error instanceof Error ? r2Error.message : String(r2Error);
+      res.status(500).json({ error: `Upload to R2 failed: ${errorMessage}` });
     }
   } catch (error) {
     console.error("Upload error:", error);

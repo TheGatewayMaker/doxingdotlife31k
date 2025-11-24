@@ -18,16 +18,28 @@ interface PostMetadata {
 }
 
 const getR2Client = (): S3Client => {
-  const accountId = process.env.R2_ACCOUNT_ID;
   const accessKeyId = process.env.R2_ACCESS_KEY_ID;
   const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
-  const endpoint = process.env.R2_ENDPOINT;
+  const accountId = process.env.R2_ACCOUNT_ID;
 
-  if (!accountId || !accessKeyId || !secretAccessKey || !endpoint) {
+  if (!accessKeyId || !secretAccessKey || !accountId) {
+    const missing = [];
+    if (!accessKeyId) missing.push("R2_ACCESS_KEY_ID");
+    if (!secretAccessKey) missing.push("R2_SECRET_ACCESS_KEY");
+    if (!accountId) missing.push("R2_ACCOUNT_ID");
+
+    console.error("Missing R2 env variables:", missing);
+    console.error(
+      "Available env keys:",
+      Object.keys(process.env).filter((k) => k.startsWith("R2_")),
+    );
+
     throw new Error(
-      "Missing required R2 environment variables: R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_ENDPOINT",
+      `Missing required R2 environment variables: ${missing.join(", ")}. Please set these in your deployment environment.`,
     );
   }
+
+  const endpoint = `https://${accountId}.r2.cloudflarestorage.com`;
 
   return new S3Client({
     region: "auto",
@@ -48,14 +60,28 @@ const getBucketName = (): string => {
 };
 
 export const getMediaUrl = (key: string): string => {
-  const endpoint = process.env.R2_ENDPOINT;
-  const bucketName = getBucketName();
+  const publicUrl = process.env.R2_PUBLIC_URL;
 
-  if (!endpoint) {
-    throw new Error("Missing R2_ENDPOINT");
+  if (!publicUrl) {
+    console.warn(
+      "R2_PUBLIC_URL not set. Media files may not load properly. Please set R2_PUBLIC_URL in your environment variables.",
+    );
   }
 
-  return `${endpoint}/${bucketName}/${key}`;
+  if (publicUrl) {
+    return `${publicUrl}/${key}`;
+  }
+
+  const accountId = process.env.R2_ACCOUNT_ID;
+  const bucketName = process.env.R2_BUCKET_NAME;
+
+  if (!accountId || !bucketName) {
+    throw new Error(
+      "Missing R2_PUBLIC_URL and cannot construct URL without R2_ACCOUNT_ID and R2_BUCKET_NAME",
+    );
+  }
+
+  return `https://${bucketName}.${accountId}.r2.cloudflarestorage.com/${key}`;
 };
 
 export const uploadMediaFile = async (
@@ -74,6 +100,10 @@ export const uploadMediaFile = async (
       Key: key,
       Body: buffer,
       ContentType: contentType,
+      CacheControl: "public, max-age=31536000",
+      Metadata: {
+        "Cache-Control": "public, max-age=31536000",
+      },
     }),
   );
 
@@ -231,6 +261,34 @@ export const getServersList = async (): Promise<string[]> => {
   }
 };
 
+interface PostMetadataWithThumbnail extends PostMetadata {
+  thumbnail?: string;
+}
+
+export const uploadPostMetadataWithThumbnail = async (
+  postId: string,
+  metadata: PostMetadata,
+  thumbnailUrl: string,
+): Promise<void> => {
+  const client = getR2Client();
+  const bucketName = getBucketName();
+  const key = `posts/${postId}/metadata.json`;
+
+  const metadataWithThumbnail: PostMetadataWithThumbnail = {
+    ...metadata,
+    thumbnail: thumbnailUrl,
+  };
+
+  await client.send(
+    new PutObjectCommand({
+      Bucket: bucketName,
+      Key: key,
+      Body: JSON.stringify(metadataWithThumbnail, null, 2),
+      ContentType: "application/json",
+    }),
+  );
+};
+
 export interface PostWithThumbnail extends PostMetadata {
   thumbnail?: string;
 }
@@ -245,7 +303,10 @@ export const getPostWithThumbnail = async (
 
   let thumbnail: string | undefined;
 
-  if (metadata.mediaFiles && metadata.mediaFiles.length > 0) {
+  const metadataWithThumbnail = metadata as PostMetadataWithThumbnail;
+  if (metadataWithThumbnail.thumbnail) {
+    thumbnail = metadataWithThumbnail.thumbnail;
+  } else if (metadata.mediaFiles && metadata.mediaFiles.length > 0) {
     const firstMediaFile = metadata.mediaFiles[0];
     thumbnail = getMediaUrl(`posts/${postId}/${firstMediaFile}`);
   }
@@ -254,4 +315,69 @@ export const getPostWithThumbnail = async (
     ...metadata,
     thumbnail,
   };
+};
+
+export const deleteMediaFile = async (
+  postId: string,
+  fileName: string,
+): Promise<void> => {
+  const client = getR2Client();
+  const bucketName = getBucketName();
+  const key = `posts/${postId}/${fileName}`;
+
+  await client.send(
+    new DeleteObjectCommand({
+      Bucket: bucketName,
+      Key: key,
+    }),
+  );
+
+  const metadata = await getPostMetadata(postId);
+  if (metadata && metadata.mediaFiles) {
+    const updatedMediaFiles = metadata.mediaFiles.filter((f) => f !== fileName);
+    const updatedMetadata: PostMetadata = {
+      ...metadata,
+      mediaFiles: updatedMediaFiles,
+    };
+    await uploadPostMetadata(postId, updatedMetadata);
+  }
+};
+
+export const deletePostFolder = async (postId: string): Promise<void> => {
+  const client = getR2Client();
+  const bucketName = getBucketName();
+
+  const files = await listPostFiles(postId);
+  files.push("metadata.json");
+
+  for (const file of files) {
+    const key = `posts/${postId}/${file}`;
+    await client.send(
+      new DeleteObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      }),
+    );
+  }
+};
+
+export const updatePostMetadataField = async (
+  postId: string,
+  updates: Partial<PostMetadata>,
+): Promise<PostMetadata | null> => {
+  const metadata = await getPostMetadata(postId);
+  if (!metadata) {
+    return null;
+  }
+
+  const updatedMetadata: PostMetadata = {
+    ...metadata,
+    ...updates,
+    id: metadata.id,
+    createdAt: metadata.createdAt,
+    mediaFiles: metadata.mediaFiles,
+  };
+
+  await uploadPostMetadata(postId, updatedMetadata);
+  return updatedMetadata;
 };

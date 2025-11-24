@@ -1,4 +1,3 @@
-import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import multer from "multer";
@@ -6,6 +5,17 @@ import { handleDemo } from "./routes/demo";
 import { handleUpload } from "./routes/upload";
 import { handleGetPosts } from "./routes/posts";
 import { handleGetServers } from "./routes/servers";
+import {
+  handleDeletePost,
+  handleDeleteMediaFile,
+  handleUpdatePost,
+} from "./routes/admin";
+import {
+  handleLogin,
+  handleLogout,
+  handleCheckAuth,
+  authMiddleware,
+} from "./routes/auth";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -17,10 +27,49 @@ const upload = multer({
 export function createServer() {
   const app = express();
 
-  // Middleware
-  app.use(cors());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  // Middleware - order matters, apply parsers first
+  app.use(
+    cors({
+      origin: "*",
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: false,
+    }),
+  );
+
+  // JSON and URL-encoded body parsing with proper limits
+  app.use(express.json({ limit: "50mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
+  // Debug middleware to log incoming requests
+  app.use((req, res, next) => {
+    if (req.path === "/api/auth/login") {
+      console.log(
+        `[${new Date().toISOString()}] ${req.method} ${req.path} - Content-Type: ${req.get("Content-Type")}`,
+      );
+      console.log(
+        `Body type: ${typeof req.body}, Body:`,
+        JSON.stringify(req.body).substring(0, 100),
+      );
+    }
+    next();
+  });
+
+  // Health check endpoint
+  app.get("/api/health", (_req, res) => {
+    const hasAdminUsername = !!process.env.ADMIN_USERNAME;
+    const hasAdminPassword = !!process.env.ADMIN_PASSWORD;
+
+    res.json({
+      status: "ok",
+      environment: process.env.NODE_ENV || "development",
+      credentials: {
+        adminUsernameSet: hasAdminUsername,
+        adminPasswordSet: hasAdminPassword,
+      },
+      timestamp: new Date().toISOString(),
+    });
+  });
 
   // Example API routes
   app.get("/api/ping", (_req, res) => {
@@ -30,10 +79,81 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Authentication routes
+  app.post("/api/auth/login", handleLogin);
+  app.post("/api/auth/logout", handleLogout);
+  app.get("/api/auth/check", handleCheckAuth);
+
   // Forum API routes
-  app.post("/api/upload", upload.single("media"), handleUpload);
+  app.post(
+    "/api/upload",
+    authMiddleware,
+    upload.fields([
+      { name: "media", maxCount: 1 },
+      { name: "thumbnail", maxCount: 1 },
+    ]),
+    handleUpload,
+  );
   app.get("/api/posts", handleGetPosts);
   app.get("/api/servers", handleGetServers);
+
+  // Admin routes (protected by auth middleware)
+  app.delete("/api/posts/:postId", authMiddleware, handleDeletePost);
+  app.delete(
+    "/api/posts/:postId/media/:fileName",
+    authMiddleware,
+    handleDeleteMediaFile,
+  );
+  app.put("/api/posts/:postId", authMiddleware, handleUpdatePost);
+
+  // Media proxy endpoint for additional CORS support
+  app.get("/api/media/:postId/:fileName", async (req, res) => {
+    try {
+      const { postId, fileName } = req.params;
+
+      if (!postId || !fileName) {
+        return res.status(400).json({ error: "Invalid request" });
+      }
+
+      // Validate that only legitimate paths are accessed
+      if (fileName.includes("..") || fileName.includes("/")) {
+        return res.status(403).json({ error: "Invalid file path" });
+      }
+
+      const mediaUrl = `${process.env.R2_PUBLIC_URL || `https://${process.env.R2_BUCKET_NAME}.${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`}/posts/${postId}/${fileName}`;
+
+      res.set({
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Cache-Control": "public, max-age=31536000",
+      });
+
+      const response = await fetch(mediaUrl);
+      const contentType = response.headers.get("content-type");
+
+      if (contentType) {
+        res.set("Content-Type", contentType);
+      }
+
+      res.set({
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, max-age=31536000",
+      });
+
+      if (response.ok && response.body) {
+        const buffer = await response.arrayBuffer();
+        res.send(Buffer.from(buffer));
+      } else {
+        res
+          .status(response.status || 500)
+          .json({ error: "Failed to fetch media" });
+      }
+    } catch (err) {
+      console.error("Media proxy error:", err);
+      res.status(500).json({ error: "Failed to fetch media" });
+    }
+  });
 
   return app;
 }

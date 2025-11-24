@@ -15,20 +15,25 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-screen bg-background text-foreground flex flex-col animate-fadeIn">
       <Header />
-      <div className="flex-1 flex items-center justify-center px-4">
-        <div className="text-center max-w-md">
-          <div className="text-8xl font-black mb-4 text-accent">404</div>
-          <h1 className="text-4xl font-black mb-4 text-foreground">
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div
+          className="text-center max-w-md animate-fadeIn"
+          style={{ animationDelay: "0.1s" }}
+        >
+          <div className="text-6xl sm:text-7xl md:text-8xl font-black mb-4 text-accent">
+            404
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black mb-4 text-foreground">
             Page Not Found
           </h1>
-          <p className="text-lg text-muted-foreground mb-8">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8">
             The page you're looking for doesn't exist or has been moved.
           </p>
           <Link
             to="/"
-            className="inline-block px-6 py-3 bg-accent text-accent-foreground font-bold rounded-lg hover:bg-accent/90 transition-all"
+            className="inline-block px-6 py-3 bg-accent text-accent-foreground font-bold rounded-lg hover:bg-accent/90 transition-all shadow-md hover:shadow-lg active:scale-95"
           >
             ← Return to Home
           </Link>
