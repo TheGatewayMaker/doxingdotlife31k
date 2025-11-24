@@ -97,6 +97,10 @@ export const handleLogin: RequestHandler = async (req, res) => {
       }
     }
 
+    console.log(
+      `[${new Date().toISOString()}] ✅ User "${username}" logged in successfully`,
+    );
+
     res.json({
       success: true,
       message: "Login successful",
@@ -104,7 +108,10 @@ export const handleLogin: RequestHandler = async (req, res) => {
       expiresIn: TOKEN_EXPIRY_MS,
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error(
+      `[${new Date().toISOString()}] ❌ Login error:`,
+      error instanceof Error ? error.message : error,
+    );
     res.status(500).json({ error: "Login failed" });
   }
 };
