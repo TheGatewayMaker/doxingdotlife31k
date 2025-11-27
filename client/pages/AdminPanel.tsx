@@ -106,7 +106,7 @@ const COUNTRIES = [
 
 export default function AdminPanel() {
   const navigate = useNavigate();
-  const { isAuthenticated, token, isLoading: isAuthLoading } = useAuthContext();
+  const { isAuthenticated, getIdToken, isLoading: isAuthLoading } = useAuthContext();
   const [posts, setPosts] = useState<Post[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
@@ -184,14 +184,19 @@ export default function AdminPanel() {
   };
 
   const confirmDeletePost = async () => {
-    if (!deletingPostId || !token) return;
+    if (!deletingPostId) return;
 
     try {
       setIsDeletingPost(true);
+      const idToken = await getIdToken();
+      if (!idToken) {
+        throw new Error("Authentication token not available");
+      }
+
       const response = await fetch(`/api/posts/${deletingPostId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${idToken}`,
         },
       });
 
@@ -411,7 +416,7 @@ export default function AdminPanel() {
                     onDelete={handleDeletePost}
                     onUpdate={handlePostUpdated}
                     animationDelay={idx * 0.05}
-                    authToken={token!}
+                    getIdToken={getIdToken}
                   />
                 ))}
               </div>
