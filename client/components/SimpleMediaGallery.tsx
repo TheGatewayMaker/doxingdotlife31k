@@ -61,15 +61,15 @@ export default function SimpleMediaGallery({
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
-    if (mediaFiles.length <= 1) return;
+    if (filteredMediaFiles.length <= 1) return;
 
     if (e.key === "ArrowLeft") {
       setSelectedMediaIndex((prev) =>
-        prev === 0 ? mediaFiles.length - 1 : prev - 1,
+        prev === 0 ? filteredMediaFiles.length - 1 : prev - 1,
       );
     } else if (e.key === "ArrowRight") {
       setSelectedMediaIndex((prev) =>
-        prev === mediaFiles.length - 1 ? 0 : prev + 1,
+        prev === filteredMediaFiles.length - 1 ? 0 : prev + 1,
       );
     } else if (
       e.key === "Escape" &&
@@ -84,7 +84,7 @@ export default function SimpleMediaGallery({
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [mediaFiles.length, isFullscreen]);
+  }, [filteredMediaFiles.length, isFullscreen]);
 
   const handleDownload = () => {
     const link = document.createElement("a");
