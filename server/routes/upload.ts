@@ -16,6 +16,37 @@ interface UploadRequest {
   nsfw?: string | boolean;
 }
 
+const detectImageMimeType = (
+  originalMimetype: string | undefined,
+  fileName: string,
+): string => {
+  // If browser provided a MIME type, use it
+  if (originalMimetype && originalMimetype.startsWith("image/")) {
+    return originalMimetype;
+  }
+
+  // Fallback: detect from file extension
+  const extension = fileName.toLowerCase().split(".").pop() || "";
+  const mimeTypes: { [key: string]: string } = {
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    jpe: "image/jpeg",
+    png: "image/png",
+    gif: "image/gif",
+    webp: "image/webp",
+    svg: "image/svg+xml",
+    bmp: "image/bmp",
+    ico: "image/x-icon",
+    tiff: "image/tiff",
+    tif: "image/tiff",
+    heic: "image/heic",
+    heif: "image/heif",
+    avif: "image/avif",
+  };
+
+  return mimeTypes[extension] || "image/jpeg";
+};
+
 export const handleUpload: RequestHandler = async (req, res) => {
   try {
     const { title, description, country, city, server, nsfw } =
@@ -77,11 +108,15 @@ export const handleUpload: RequestHandler = async (req, res) => {
       // Upload thumbnail with error handling
       let thumbnailUrl: string;
       try {
+        const thumbnailMimeType = detectImageMimeType(
+          thumbnailFile.mimetype,
+          thumbnailFile.originalname || "thumbnail",
+        );
         thumbnailUrl = await uploadMediaFile(
           postId,
           thumbnailFileName,
           thumbnailFile.buffer,
-          thumbnailFile.mimetype || "image/jpeg",
+          thumbnailMimeType,
         );
         console.log(
           `[${new Date().toISOString()}] ✅ Thumbnail uploaded successfully for post ${postId}`,
@@ -113,11 +148,15 @@ export const handleUpload: RequestHandler = async (req, res) => {
             `Uploading media file ${i + 1}/${mediaCount}: ${mediaFileName} (${(mediaFile.size / 1024 / 1024).toFixed(2)}MB)`,
           );
 
+          const mediaFileMimeType = mediaFile.mimetype
+            ? detectImageMimeType(mediaFile.mimetype, mediaFile.originalname || "media")
+            : "application/octet-stream";
+
           await uploadMediaFile(
             postId,
             mediaFileName,
             mediaFile.buffer,
-            mediaFile.mimetype || "application/octet-stream",
+            mediaFileMimeType,
           );
 
           mediaFileNames.push(mediaFileName);
