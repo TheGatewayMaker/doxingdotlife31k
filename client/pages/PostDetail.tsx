@@ -213,7 +213,7 @@ export default function PostDetail() {
               </div>
 
               {/* Post Metadata */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-xs sm:text-sm text-gray-500 space-y-2 sm:space-y-0">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-xs sm:text-sm text-[#979797] space-y-2 sm:space-y-0">
                 <div className="flex items-center gap-2">
                   <span className="text-lg">📅</span>
                   <span>
@@ -224,7 +224,7 @@ export default function PostDetail() {
                     })}
                   </span>
                 </div>
-                <div className="hidden sm:block w-1 h-1 bg-gray-700 rounded-full"></div>
+                <div className="hidden sm:block w-1 h-1 bg-[#666666] rounded-full"></div>
                 <div className="flex items-center gap-2">
                   <span className="text-lg">🕒</span>
                   <span>
