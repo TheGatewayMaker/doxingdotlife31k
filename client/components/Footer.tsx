@@ -40,14 +40,14 @@ export default function Footer() {
           </div>
           <div className="animate-fadeIn" style={{ animationDelay: "0.2s" }}>
             <h4 className="font-bold text-white mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
-              <LinkIcon className="w-4 h-4 text-gray-500" />
+              <LinkIcon className="w-4 h-4 text-[#979797]" />
               Navigation
             </h4>
-            <ul className="space-y-2.5 text-sm text-gray-500">
+            <ul className="space-y-2.5 text-sm text-[#979797]">
               <li>
                 <a
                   href="/"
-                  className="hover:text-gray-300 transition-colors duration-200 flex items-center gap-2 hover:translate-x-1"
+                  className="hover:text-[#0088CC] transition-colors duration-200 flex items-center gap-2 hover:translate-x-1"
                 >
                   <HomeIcon className="w-4 h-4" />
                   <span>Home</span>
@@ -56,7 +56,7 @@ export default function Footer() {
               <li>
                 <a
                   href="/all-posts"
-                  className="hover:text-gray-300 transition-colors duration-200 flex items-center gap-2 hover:translate-x-1"
+                  className="hover:text-[#0088CC] transition-colors duration-200 flex items-center gap-2 hover:translate-x-1"
                 >
                   <SearchAltIcon className="w-4 h-4" />
                   <span>Browse Database</span>
@@ -65,7 +65,7 @@ export default function Footer() {
               <li>
                 <a
                   href="/dox-anyone"
-                  className="hover:text-gray-300 transition-colors duration-200 flex items-center gap-2 hover:translate-x-1"
+                  className="hover:text-[#0088CC] transition-colors duration-200 flex items-center gap-2 hover:translate-x-1"
                 >
                   <MessageIcon className="w-4 h-4" />
                   <span>Search Tool</span>
