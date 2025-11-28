@@ -40,12 +40,19 @@ export function createServer() {
   app.get("/api/health", (_req, res) => {
     const hasFirebaseConfig = !!process.env.FIREBASE_PROJECT_ID;
     const hasAuthorizedEmails = !!process.env.VITE_AUTHORIZED_EMAILS;
+    const hasR2Config = !!(
+      process.env.R2_ACCESS_KEY_ID &&
+      process.env.R2_SECRET_ACCESS_KEY &&
+      process.env.R2_ACCOUNT_ID &&
+      process.env.R2_BUCKET_NAME
+    );
 
     res.json({
-      status: "ok",
+      status: hasR2Config ? "ok" : "partial",
       environment: process.env.NODE_ENV || "development",
       firebaseConfigured: hasFirebaseConfig,
       authorizedEmailsConfigured: hasAuthorizedEmails,
+      r2Configured: hasR2Config,
       timestamp: new Date().toISOString(),
     });
   });
