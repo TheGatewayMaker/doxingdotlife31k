@@ -8,7 +8,7 @@ export default function DoxAnyone() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col animate-fadeIn">
+    <div className="min-h-screen bg-[#000000] text-white flex flex-col animate-fadeIn">
       <Header />
       <main className="flex-1 w-full">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
