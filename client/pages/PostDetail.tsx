@@ -242,7 +242,7 @@ export default function PostDetail() {
               className="mb-10 sm:mb-12 animate-fadeIn"
               style={{ animationDelay: "0.3s" }}
             >
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 sm:p-8">
+              <div className="bg-[#1a1a1a] border border-[#666666] rounded-xl p-6 sm:p-8">
                 <h2 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
                   <span>📋</span>
                   Overview
