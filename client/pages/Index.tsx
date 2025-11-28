@@ -443,7 +443,7 @@ export default function Index() {
               className="mb-0 animate-fadeIn"
               style={{ animationDelay: "0.3s" }}
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* Country Dropdown */}
                 <div className="relative group">
                   <label className="text-sm font-bold text-white block mb-3 flex items-center gap-2">
@@ -491,59 +491,6 @@ export default function Index() {
                       ) : (
                         <div className="px-4 py-2 text-gray-500 text-sm">
                           No countries found
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                {/* City Dropdown */}
-                <div className="relative group">
-                  <label className="text-sm font-bold text-white block mb-3 flex items-center gap-2">
-                    <MapPinIcon className="w-4 h-4 text-blue-400" />
-                    By City
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder={
-                        selectedCity ? selectedCity : "Select city..."
-                      }
-                      value={citySearch}
-                      onChange={(e) => setCitySearch(e.target.value)}
-                      className="w-full px-4 py-3 pr-10 bg-slate-800 border border-slate-700 hover:border-blue-500 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all shadow-sm hover:shadow-md hover:shadow-blue-500/20"
-                    />
-                    {selectedCity && (
-                      <button
-                        onClick={() => {
-                          setSelectedCity("");
-                          setCitySearch("");
-                        }}
-                        className="absolute top-1/2 right-3 transform -translate-y-1/2 text-accent hover:text-accent/80 transition-colors hover:scale-110"
-                        title="Clear selection"
-                      >
-                        <CloseIcon className="w-5 h-5" />
-                      </button>
-                    )}
-                  </div>
-                  {citySearch && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-slate-800 border border-slate-700 rounded-lg z-[999] max-h-48 overflow-y-auto shadow-lg">
-                      {availableCities.length > 0 ? (
-                        availableCities.map((city) => (
-                          <button
-                            key={city}
-                            onClick={() => {
-                              setSelectedCity(city);
-                              setCitySearch("");
-                            }}
-                            className="w-full text-left px-4 py-2 hover:bg-blue-600/30 hover:border-l-2 hover:border-l-blue-500 text-white text-sm transition-all duration-200"
-                          >
-                            {city}
-                          </button>
-                        ))
-                      ) : (
-                        <div className="px-4 py-2 text-gray-500 text-sm">
-                          No cities found
                         </div>
                       )}
                     </div>
