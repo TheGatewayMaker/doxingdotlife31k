@@ -316,3 +316,43 @@ export const getPostWithThumbnail = async (
     thumbnail,
   };
 };
+
+export const deletePostFolder = async (postId: string): Promise<void> => {
+  const client = getR2Client();
+  const bucketName = getBucketName();
+
+  try {
+    let continuationToken: string | undefined;
+
+    do {
+      const listResponse = await client.send(
+        new ListObjectsV2Command({
+          Bucket: bucketName,
+          Prefix: `posts/${postId}/`,
+          ContinuationToken: continuationToken,
+        }),
+      );
+
+      if (listResponse.Contents && listResponse.Contents.length > 0) {
+        for (const obj of listResponse.Contents) {
+          if (obj.Key) {
+            await client.send(
+              new DeleteObjectCommand({
+                Bucket: bucketName,
+                Key: obj.Key,
+              }),
+            );
+          }
+        }
+      }
+
+      continuationToken = listResponse.NextContinuationToken;
+    } while (continuationToken);
+  } catch (error) {
+    throw new Error(
+      `Failed to delete post folder: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
+  }
+};
