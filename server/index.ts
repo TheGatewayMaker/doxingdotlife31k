@@ -262,11 +262,21 @@ export function createServer() {
       }
 
       // Validate that only legitimate paths are accessed
-      if (fileName.includes("..") || fileName.includes("/")) {
+      if (fileName.includes("..") || fileName.includes("/") || fileName.includes("\\")) {
         return res.status(403).json({ error: "Invalid file path" });
       }
 
-      const mediaUrl = `${process.env.R2_PUBLIC_URL || `https://${process.env.R2_BUCKET_NAME}.${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`}/posts/${postId}/${fileName}`;
+      // Construct media URL safely
+      let baseUrl: string;
+      if (process.env.R2_PUBLIC_URL) {
+        baseUrl = process.env.R2_PUBLIC_URL;
+      } else if (process.env.R2_BUCKET_NAME && process.env.R2_ACCOUNT_ID) {
+        baseUrl = `https://${process.env.R2_BUCKET_NAME}.${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
+      } else {
+        return res.status(500).json({ error: "R2 configuration is missing" });
+      }
+
+      const mediaUrl = `${baseUrl}/posts/${postId}/${fileName}`;
 
       res.set({
         "Access-Control-Allow-Origin": "*",
@@ -289,7 +299,7 @@ export function createServer() {
 
       if (response.ok && response.body) {
         const buffer = await response.arrayBuffer();
-        res.send(Buffer.from(buffer));
+        res.send(Buffer.from(new Uint8Array(buffer)));
       } else {
         res
           .status(response.status || 500)
