@@ -239,8 +239,7 @@ export const handleUpload: RequestHandler = async (req, res, next) => {
     }
   } catch (error) {
     console.error("Upload error:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     res.status(500).json({
       error: "Upload failed",
       details:
