@@ -212,6 +212,19 @@ export function createServer() {
     }
   });
 
+  // Catch-all async error handler wrapper
+  const asyncHandler = (
+    fn: (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction,
+    ) => Promise<any>,
+  ) => {
+    return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      Promise.resolve(fn(req, res, next)).catch(next);
+    };
+  };
+
   // Global error handler middleware - MUST be last
   app.use(
     (
@@ -224,16 +237,25 @@ export function createServer() {
 
       // Prevent sending response twice
       if (res.headersSent) {
-        return next(err);
+        console.error("Headers already sent, cannot send error response");
+        return;
       }
 
-      const status = err.status || err.statusCode || 500;
-      const message = err.message || "An unexpected error occurred";
+      // Set Content-Type to JSON to ensure proper response format
+      res.set("Content-Type", "application/json");
+
+      const status =
+        err.status ||
+        err.statusCode ||
+        (err.name === "MulterError" ? 400 : 500);
+      const message =
+        err.message || "An unexpected error occurred";
       const details =
         process.env.NODE_ENV === "development"
           ? {
               message: err.message,
               stack: err.stack,
+              errorName: err.name,
             }
           : undefined;
 
