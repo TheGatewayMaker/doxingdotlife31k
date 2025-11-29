@@ -104,14 +104,37 @@ export function createServer() {
   app.get("/api/auth/check", handleCheckAuth);
 
   // Forum API routes
-  // Longer timeout for upload endpoint (5 minutes) to handle large files and multiple attachments
+  // Longer timeout for upload endpoint (10 minutes) to handle large files and multiple attachments
   const uploadTimeout = (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction,
   ) => {
-    req.setTimeout(5 * 60 * 1000); // 5 minutes
-    res.setTimeout(5 * 60 * 1000);
+    const timeout = 10 * 60 * 1000; // 10 minutes
+    req.setTimeout(timeout);
+    res.setTimeout(timeout);
+
+    // Handle timeout errors
+    req.on("timeout", () => {
+      console.error("Request timeout for upload");
+      if (!res.headersSent) {
+        res.status(408).json({
+          error: "Request timeout",
+          details: "Upload took too long to complete",
+        });
+      }
+    });
+
+    res.on("timeout", () => {
+      console.error("Response timeout for upload");
+      if (!res.headersSent) {
+        res.status(408).json({
+          error: "Response timeout",
+          details: "Server took too long to respond",
+        });
+      }
+    });
+
     next();
   };
 
