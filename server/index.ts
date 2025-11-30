@@ -13,10 +13,18 @@ import {
 import { handleLogout, handleCheckAuth, authMiddleware } from "./routes/auth";
 import { validateR2Configuration } from "./utils/r2-storage";
 
+// On Netlify Functions, use smaller limits due to request size constraints
+// Local dev can handle larger files
+const isNetlify = process.env.NETLIFY === "true";
+const MAX_FILE_SIZE = isNetlify
+  ? 100 * 1024 * 1024 // 100MB per file on Netlify
+  : 500 * 1024 * 1024; // 500MB per file locally
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 500 * 1024 * 1024, // 500MB per file for long videos
+    fileSize: MAX_FILE_SIZE,
+    fieldSize: MAX_FILE_SIZE, // Also set field size limit
   },
 });
 
@@ -34,8 +42,10 @@ export function createServer() {
   );
 
   // JSON and URL-encoded body parsing with proper limits
-  app.use(express.json({ limit: "50mb" }));
-  app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+  // Note: multipart/form-data is NOT parsed by these - it's handled by multer
+  // Keep these reasonable since actual file data goes through multer's memory storage
+  app.use(express.json({ limit: "10mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
   // Error handling for body parsing
   app.use(
@@ -221,6 +231,27 @@ export function createServer() {
     "/api/upload",
     uploadTimeout,
     authMiddleware,
+    // Pre-check: Validate request size early, especially for Netlify Functions
+    (req, res, next) => {
+      const contentLength = parseInt(req.headers["content-length"] || "0", 10);
+      const isNetlify = process.env.NETLIFY === "true";
+      // Netlify Functions have practical limits around 250MB for the entire request
+      // but real-world performance degrades significantly above 50MB
+      const maxSize = isNetlify ? 200 * 1024 * 1024 : 1024 * 1024 * 1024;
+
+      console.log(
+        `[${new Date().toISOString()}] Upload request content-length: ${(contentLength / 1024 / 1024).toFixed(2)}MB (max: ${(maxSize / 1024 / 1024).toFixed(2)}MB on ${isNetlify ? "NETLIFY" : "LOCAL"})`,
+      );
+
+      if (contentLength > maxSize) {
+        return res.status(413).json({
+          error: "Request too large",
+          details: `Total upload size (${(contentLength / 1024 / 1024).toFixed(2)}MB) exceeds maximum allowed (${(maxSize / 1024 / 1024).toFixed(2)}MB). ${isNetlify ? "Please upload fewer or smaller files." : ""}`,
+        });
+      }
+
+      next();
+    },
     (req, res, next) => {
       try {
         upload.fields([

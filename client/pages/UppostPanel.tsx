@@ -147,8 +147,9 @@ export default function UppostPanel() {
       return;
     }
 
-    // Validate file sizes (500MB = 500 * 1024 * 1024 bytes)
+    // Validate file sizes (500MB = 500 * 1024 * 1024 bytes per file)
     const MAX_FILE_SIZE = 500 * 1024 * 1024;
+    const MAX_TOTAL_SIZE = 150 * 1024 * 1024; // 150MB total for all files combined on Netlify
     const oversizedFiles: string[] = [];
 
     if (thumbnail && thumbnail.size > MAX_FILE_SIZE) {
@@ -157,17 +158,28 @@ export default function UppostPanel() {
       );
     }
 
+    let totalSize = thumbnail ? thumbnail.size : 0;
+
     for (const file of mediaFiles) {
       if (file.size > MAX_FILE_SIZE) {
         oversizedFiles.push(
           `${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)`,
         );
       }
+      totalSize += file.size;
     }
 
     if (oversizedFiles.length > 0) {
       setUploadError(
         `The following files exceed 500MB: ${oversizedFiles.join(", ")}`,
+      );
+      return;
+    }
+
+    // Check total upload size
+    if (totalSize > MAX_TOTAL_SIZE) {
+      setUploadError(
+        `Total upload size (${(totalSize / 1024 / 1024).toFixed(2)}MB) exceeds 150MB limit. Please upload fewer files or use smaller files.`,
       );
       return;
     }

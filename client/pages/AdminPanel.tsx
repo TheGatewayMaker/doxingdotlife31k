@@ -311,14 +311,14 @@ export default function AdminPanel() {
               style={{ animationDelay: "0.2s" }}
             >
               <div className="relative">
+                <SearchIcon className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search posts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2.5 bg-card border border-border hover:border-muted rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted/50 focus:border-muted text-sm transition-all pl-9"
+                  className="w-full px-3 sm:px-4 py-2.5 bg-card border border-border hover:border-muted rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted/50 focus:border-muted text-sm transition-all pl-10 sm:pl-11"
                 />
-                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
               </div>
             </div>
 
