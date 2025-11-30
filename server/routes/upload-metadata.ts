@@ -78,6 +78,9 @@ export const handleUploadMetadata: RequestHandler = async (req, res) => {
       `[${new Date().toISOString()}] Storing metadata for post ${postId}`,
     );
 
+    // Construct the thumbnail URL from the filename
+    const thumbnailUrl = getMediaUrl(`posts/${postId}/${thumbnailFileName}`);
+
     const postMetadata = {
       id: postId,
       title,
