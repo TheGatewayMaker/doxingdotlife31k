@@ -74,6 +74,73 @@ const getBucketName = (): string => {
   return bucketName;
 };
 
+export interface PresignedUrlRequest {
+  fileName: string;
+  contentType: string;
+  fileSize: number;
+}
+
+export interface PresignedUrlResponse {
+  fileName: string;
+  signedUrl: string;
+  contentType: string;
+  fileSize: number;
+}
+
+export const generatePresignedUploadUrls = async (
+  postId: string,
+  files: PresignedUrlRequest[],
+  expiresIn: number = 3600,
+): Promise<PresignedUrlResponse[]> => {
+  try {
+    const client = getR2Client();
+    const bucketName = getBucketName();
+    const presignedUrls: PresignedUrlResponse[] = [];
+
+    for (const file of files) {
+      const sanitizedName = sanitizePresignedFileName(file.fileName);
+      const key = `posts/${postId}/${Date.now()}-${Math.random().toString(36).substring(7)}-${sanitizedName}`;
+
+      const command = new PutObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+        ContentType: file.contentType,
+        CacheControl: "public, max-age=31536000",
+        Metadata: {
+          "original-filename": file.fileName,
+        },
+      });
+
+      const signedUrl = await getSignedUrl(client, command, {
+        expiresIn,
+      });
+
+      presignedUrls.push({
+        fileName: file.fileName,
+        signedUrl,
+        contentType: file.contentType,
+        fileSize: file.fileSize,
+      });
+
+      console.log(
+        `[${new Date().toISOString()}] Generated presigned URL for ${file.fileName} (${(file.fileSize / 1024 / 1024).toFixed(2)}MB)`,
+      );
+    }
+
+    return presignedUrls;
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error("Failed to generate presigned URLs:", errorMsg);
+    throw new Error(`Failed to generate presigned URLs: ${errorMsg}`);
+  }
+};
+
+const sanitizePresignedFileName = (fileName: string): string => {
+  return fileName
+    .replace(/[^a-zA-Z0-9._-]/g, "_")
+    .substring(0, 100);
+};
+
 export const validateR2Configuration = async (): Promise<{
   isValid: boolean;
   message: string;
