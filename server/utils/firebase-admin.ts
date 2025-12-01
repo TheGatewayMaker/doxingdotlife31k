@@ -64,6 +64,7 @@ export const verifyFirebaseToken = async (
     const app = initializeFirebaseAdmin();
 
     if (!app) {
+      console.error("Firebase Admin SDK is not initialized - check configuration");
       throw new Error("Firebase Admin SDK not initialized");
     }
 
@@ -90,13 +91,20 @@ export const verifyFirebaseToken = async (
       });
     }
 
+    console.log(
+      `[${new Date().toISOString()}] Token verified - UID: ${decodedToken.uid}, Email: ${email}, Authorized: ${isAuthorized}`
+    );
+
     return {
       uid: decodedToken.uid,
       email: decodedToken.email,
       isAuthorized,
     };
   } catch (error) {
-    console.error("Firebase token verification error:", error);
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error(
+      `[${new Date().toISOString()}] Token verification failed: ${errorMsg}`
+    );
     throw new Error("Invalid or expired token");
   }
 };
