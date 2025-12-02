@@ -248,7 +248,7 @@ export default function UppostPanel() {
 
       const uploadData = await uploadResponse.json();
       setUploadMessage(
-        `Post uploaded successfully! (${metadataData.mediaCount || 0} media file(s))`,
+        `Post uploaded successfully! (${uploadData.mediaCount || 0} media file(s))`,
       );
       toast.success("Post uploaded successfully!");
       resetForm();
