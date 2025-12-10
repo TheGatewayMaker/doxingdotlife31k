@@ -235,7 +235,10 @@ export default function SearchBar({
   return (
     <div className="space-y-4 sm:space-y-5 md:space-y-6">
       {/* Main Search Input */}
-      <div className="relative animate-scaleUpFadeIn" style={{ animationDelay: "0.2s" }}>
+      <div
+        className="relative animate-scaleUpFadeIn"
+        style={{ animationDelay: "0.2s" }}
+      >
         <input
           type="text"
           placeholder="Search by name, username, or details..."
@@ -352,7 +355,9 @@ export default function SearchBar({
             <div className="relative">
               <input
                 type="text"
-                placeholder={selectedServer ? selectedServer : "Select server..."}
+                placeholder={
+                  selectedServer ? selectedServer : "Select server..."
+                }
                 value={serverSearch}
                 onChange={(e) => setServerSearch(e.target.value)}
                 className="w-full px-4 sm:px-5 py-2.5 sm:py-3 md:py-3.5 pr-10 bg-[#1a1a1a] border border-[#666666] hover:border-[#0088CC] rounded-lg text-white placeholder-[#979797] focus:outline-none focus:ring-2 focus:ring-[#0088CC] focus:border-[#0088CC] text-xs sm:text-sm transition-all min-h-[44px] touch-target"

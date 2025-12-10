@@ -80,7 +80,9 @@ export default function Header() {
             className="flex items-center gap-2 text-sm font-semibold text-[#979797] hover:text-white transition-all duration-200 hover:scale-110 relative group"
           >
             <HomeIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:text-[#0088CC]" />
-            <span className="hidden xl:inline group-hover:text-[#0088CC]">Home</span>
+            <span className="hidden xl:inline group-hover:text-[#0088CC]">
+              Home
+            </span>
             <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0088CC] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
           </Link>
           <Link
@@ -140,19 +142,26 @@ export default function Header() {
         >
           <div className="relative w-6 h-5 flex items-center justify-center">
             {/* Hamburger lines with modern animation */}
-            <div className="absolute w-full h-px bg-white transition-all duration-300 ease-in-out"
+            <div
+              className="absolute w-full h-px bg-white transition-all duration-300 ease-in-out"
               style={{
-                transform: isSidebarOpen ? "rotate(45deg) translateY(0)" : "translateY(-8px)",
+                transform: isSidebarOpen
+                  ? "rotate(45deg) translateY(0)"
+                  : "translateY(-8px)",
               }}
             />
-            <div className="absolute w-full h-px bg-white transition-all duration-300 ease-in-out"
+            <div
+              className="absolute w-full h-px bg-white transition-all duration-300 ease-in-out"
               style={{
                 opacity: isSidebarOpen ? 0 : 1,
               }}
             />
-            <div className="absolute w-full h-px bg-white transition-all duration-300 ease-in-out"
+            <div
+              className="absolute w-full h-px bg-white transition-all duration-300 ease-in-out"
               style={{
-                transform: isSidebarOpen ? "rotate(-45deg) translateY(0)" : "translateY(8px)",
+                transform: isSidebarOpen
+                  ? "rotate(-45deg) translateY(0)"
+                  : "translateY(8px)",
               }}
             />
           </div>
