@@ -174,25 +174,32 @@ export default function Header() {
               onClick={closeSidebar}
               role="presentation"
               aria-hidden="true"
-              style={{ zIndex: 999 }}
+              style={{ zIndex: 40 }}
             />
 
             {/* Sidebar */}
             <div
               id="mobile-menu"
-              className="fixed top-0 left-0 right-0 bottom-0 w-full bg-[#000000] lg:hidden shadow-2xl flex flex-col overflow-hidden"
+              className="fixed top-0 left-0 right-0 w-full max-h-screen bg-[#000000] lg:hidden shadow-2xl flex flex-col overflow-hidden"
               style={{
-                zIndex: 1000,
+                zIndex: 50,
                 animation: "slideInDown 0.3s ease-out forwards",
               }}
               role="navigation"
               aria-label="Mobile navigation"
             >
-              {/* Header padding for mobile menu */}
-              <div className="h-16 sm:h-20 border-b border-[#666666] flex items-center px-4 sm:px-6 flex-shrink-0">
+              {/* Header with close button */}
+              <div className="h-16 sm:h-20 border-b border-[#666666] flex items-center justify-between px-4 sm:px-6 flex-shrink-0">
                 <h2 className="text-lg sm:text-xl font-bold text-white">
                   Navigation
                 </h2>
+                <button
+                  onClick={closeSidebar}
+                  aria-label="Close navigation menu"
+                  className="p-2 rounded-lg hover:bg-[#666666]/40 transition-colors touch-manipulation"
+                >
+                  <X className="w-6 h-6 text-white" />
+                </button>
               </div>
 
               {/* Scrollable menu content */}
