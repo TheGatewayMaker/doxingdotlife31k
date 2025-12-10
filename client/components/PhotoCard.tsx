@@ -62,16 +62,16 @@ export default function PhotoCard({
       </div>
 
       {/* Photo Info and Download Button */}
-      <div className="p-2 sm:p-3 space-y-2 sm:space-y-3 border-t border-[#666666] flex-1 flex flex-col justify-end">
-        <p className="text-xs font-semibold text-white truncate break-words line-clamp-2">
+      <div className="p-2 space-y-2 border-t border-[#666666] flex-1 flex flex-col justify-end">
+        <p className="text-xs font-semibold text-white truncate break-words line-clamp-1">
           {name}
         </p>
 
         <button
           onClick={onDownload}
-          className="w-full px-2 sm:px-3 py-2 bg-[#0088CC] hover:bg-[#0077BB] text-white text-xs sm:text-sm font-medium rounded transition-all active:scale-95 flex items-center justify-center gap-2 touch-target min-h-[44px]"
+          className="w-full px-2 py-1.5 bg-[#0088CC] hover:bg-[#0077BB] text-white text-xs font-medium rounded transition-all active:scale-95 flex items-center justify-center gap-1 touch-target min-h-[40px]"
         >
-          <Download className="w-3 h-3 sm:w-4 sm:h-4" />
+          <Download className="w-3 h-3" />
           <span>Download</span>
         </button>
       </div>
