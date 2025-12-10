@@ -223,23 +223,23 @@ export default function Index() {
                         />
                       </div>
                     )}
-                    <div className="p-3 sm:p-4 flex-1 flex flex-col">
-                      <div className="flex items-start justify-between gap-2 mb-2 sm:mb-3">
-                        <h3 className="font-bold text-xs sm:text-sm md:text-base line-clamp-2 flex-1 text-white group-hover:text-[#0088CC] transition-colors">
+                    <div className="p-2 sm:p-3 flex-1 flex flex-col">
+                      <div className="flex items-start justify-between gap-2 mb-1.5">
+                        <h3 className="font-bold text-xs line-clamp-1 flex-1 text-white group-hover:text-[#0088CC] transition-colors">
                           {post.title}
                         </h3>
                         {post.nsfw && (
-                          <span className="inline-flex items-center gap-0.5 bg-red-600 text-white px-2 sm:px-2.5 py-0.5 sm:py-1 rounded text-xs font-bold flex-shrink-0 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-0.5 bg-red-600 text-white px-1.5 py-0.5 rounded text-xs font-bold flex-shrink-0 whitespace-nowrap">
                             NSFW
                           </span>
                         )}
                       </div>
-                      <p className="text-xs line-clamp-2 mb-3 sm:mb-4 text-[#979797] flex-1">
+                      <p className="text-xs line-clamp-1 mb-2 text-[#979797] flex-1">
                         {post.description}
                       </p>
-                      <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                      <div className="flex flex-wrap gap-1">
                         {post.country && (
-                          <span className="inline-flex items-center gap-0.5 px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium bg-[#666666] text-white border border-[#979797] flex-shrink-0">
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium bg-[#666666] text-white border border-[#979797] flex-shrink-0">
                             <GlobeIcon className="w-3 h-3" />
                             <span className="hidden sm:inline">
                               {post.country}
@@ -250,7 +250,7 @@ export default function Index() {
                           </span>
                         )}
                         {post.city && (
-                          <span className="inline-flex items-center gap-0.5 px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium bg-[#666666] text-white border border-[#979797] flex-shrink-0">
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium bg-[#666666] text-white border border-[#979797] flex-shrink-0">
                             <MapPinIcon className="w-3 h-3" />
                             <span className="hidden sm:inline">
                               {post.city}
@@ -261,7 +261,7 @@ export default function Index() {
                           </span>
                         )}
                         {post.server && (
-                          <span className="inline-flex items-center gap-0.5 px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium bg-[#666666] text-white border border-[#979797] flex-shrink-0">
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium bg-[#666666] text-white border border-[#979797] flex-shrink-0">
                             <ServerIcon className="w-3 h-3" />
                             <span className="hidden sm:inline">
                               {post.server}
