@@ -109,7 +109,7 @@ export default function PostMediaSection({
 
           {/* Video Thumbnails Grid */}
           {videos.length > 1 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8">
               {videos.map((video, idx) => (
                 <button
                   key={`${video.name}-${idx}`}
