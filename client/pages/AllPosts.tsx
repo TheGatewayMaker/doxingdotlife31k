@@ -460,26 +460,26 @@ export default function AllPosts() {
         </div>
 
         {/* All Posts */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="mb-10 sm:mb-12 animate-slideInUp">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-10 md:py-12 lg:py-16">
+          <div className="mb-8 sm:mb-10 md:mb-12 animate-slideInUp">
             {isLoadingPosts ? (
               <>
-                <h2 className="text-5xl md:text-6xl font-black mb-3 flex items-center gap-3 text-white">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 sm:mb-3 flex items-center gap-2 sm:gap-3 text-white">
                   <span className="inline-block animate-spin">
-                    <div className="w-10 h-10 border-3 border-[#666666] border-t-[#0088CC] rounded-full"></div>
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 border-3 border-[#666666] border-t-[#0088CC] rounded-full"></div>
                   </span>
-                  Loading Posts
+                  <span>Loading Posts</span>
                 </h2>
-                <p className="text-[#979797]">
+                <p className="text-[#979797] text-xs sm:text-sm md:text-base">
                   Fetching the latest posts for you...
                 </p>
               </>
             ) : filteredPosts.length === 0 ? (
               <>
-                <h2 className="text-5xl md:text-6xl font-black mb-3 text-white">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 sm:mb-3 text-white">
                   No Posts Found
                 </h2>
-                <p className="text-[#979797]">
+                <p className="text-[#979797] text-xs sm:text-sm md:text-base">
                   {hasSearchFilters
                     ? "Try adjusting your search filters"
                     : "No posts available at the moment"}
@@ -487,15 +487,15 @@ export default function AllPosts() {
               </>
             ) : (
               <>
-                <div className="flex items-center gap-3">
-                  <Flame className="w-8 h-8 text-orange-500" />
-                  <h2 className="text-5xl md:text-6xl font-black text-white">
+                <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+                  <Flame className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-orange-500" />
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white">
                     All Posts
                   </h2>
                 </div>
-                <p className="text-[#979797] mt-3">
+                <p className="text-[#979797] text-xs sm:text-sm md:text-base mt-2 sm:mt-3">
                   Showing {displayedPosts.length} of {filteredPosts.length}{" "}
-                  posts
+                  post{filteredPosts.length !== 1 ? "s" : ""}
                 </p>
               </>
             )}
@@ -503,25 +503,32 @@ export default function AllPosts() {
 
           {displayedPosts.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 mb-10 sm:mb-12">
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-8 sm:mb-10 md:mb-12">
                 {displayedPosts.map((post, idx) => (
                   <div
                     key={post.id}
                     onClick={() => navigate(`/post/${post.id}`)}
                     className={cn(
-                      "group rounded-xl overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 animate-scaleUpFadeIn border hover:shadow-xl",
+                      "group rounded-lg sm:rounded-xl overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-2 animate-scaleUpFadeIn border hover:shadow-2xl flex flex-col h-full active:scale-95 sm:active:scale-100",
                       post.isTrend
                         ? "bg-gradient-to-br from-[#4a3a1a] via-[#3a2a1a] to-[#2a1a0a] border-[#9d7e1f] hover:border-[#ffd700] hover:shadow-[#ffd700]/20"
                         : "bg-[#1a1a1a] border-[#666666] hover:border-[#0088CC] hover:shadow-[#0088CC]/20",
                     )}
                     style={{ animationDelay: `${idx * 0.08}s` }}
+                    role="link"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        navigate(`/post/${post.id}`);
+                      }
+                    }}
                   >
                     {post.thumbnail && (
-                      <div className="w-full h-40 bg-muted overflow-hidden flex items-center justify-center">
+                      <div className="w-full aspect-square bg-[#1a1a1a] overflow-hidden flex items-center justify-center relative flex-shrink-0">
                         <img
                           src={post.thumbnail}
                           alt={post.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           onError={(e) => {
                             const img = e.target as HTMLImageElement;
                             img.style.display = "none";
@@ -533,32 +540,33 @@ export default function AllPosts() {
                               const errorDiv = document.createElement("div");
                               errorDiv.setAttribute("data-error-shown", "true");
                               errorDiv.className =
-                                "text-center text-muted-foreground flex flex-col items-center justify-center gap-2";
+                                "absolute inset-0 bg-[#0a0a0a] text-center text-[#666666] flex flex-col items-center justify-center gap-1 sm:gap-2 w-full h-full";
                               errorDiv.innerHTML =
-                                '<div class="text-3xl">🖼️</div><div class="text-xs">Image unavailable</div>';
+                                '<div class="text-2xl sm:text-3xl">🖼️</div><div class="text-xs">Image unavailable</div>';
                               parent.appendChild(errorDiv);
                             }
                           }}
                           crossOrigin="anonymous"
                           loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     )}
-                    <div className="p-5">
-                      <div className="flex items-start justify-between gap-2 mb-3">
-                        <h3 className="font-bold text-base line-clamp-2 flex-1 text-white group-hover:text-blue-400 transition-colors">
+                    <div className="p-3 sm:p-4 flex-1 flex flex-col">
+                      <div className="flex items-start justify-between gap-2 mb-2 sm:mb-3">
+                        <h3 className="font-bold text-xs sm:text-sm md:text-base line-clamp-2 flex-1 text-white group-hover:text-[#0088CC] transition-colors">
                           {post.title}
                         </h3>
                         {post.nsfw && (
-                          <span className="inline-flex items-center gap-1 bg-red-600 text-white px-2.5 py-1 rounded-md text-xs font-bold flex-shrink-0 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-0.5 bg-red-600 text-white px-2 sm:px-2.5 py-0.5 sm:py-1 rounded text-xs font-bold flex-shrink-0 whitespace-nowrap">
                             NSFW
                           </span>
                         )}
                       </div>
-                      <p className="text-sm line-clamp-3 mb-4 text-[#979797]">
+                      <p className="text-xs line-clamp-2 sm:line-clamp-3 mb-3 sm:mb-4 text-[#979797] flex-1">
                         {post.description.replace(/\*\*/g, "")}
                       </p>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1 sm:gap-1.5">
                         {post.country && (
                           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-blue-600/20 text-blue-300">
                             <GlobeIcon className="w-3 h-3" />
