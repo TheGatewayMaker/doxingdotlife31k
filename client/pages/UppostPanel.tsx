@@ -573,11 +573,11 @@ export default function UppostPanel() {
               </div>
 
               {thumbnailPreview && (
-                <div className="mt-6 relative group">
+                <div className="mt-4 sm:mt-6 relative group">
                   <img
                     src={thumbnailPreview}
                     alt="Thumbnail Preview"
-                    className="max-h-48 rounded-xl mx-auto border border-border object-cover"
+                    className="max-h-40 sm:max-h-48 rounded-lg sm:rounded-xl mx-auto border border-border object-cover"
                   />
                   <button
                     type="button"
@@ -585,7 +585,7 @@ export default function UppostPanel() {
                       setThumbnail(null);
                       setThumbnailPreview("");
                     }}
-                    className="absolute top-2 right-2 bg-destructive text-destructive-foreground p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-2 right-2 bg-destructive text-destructive-foreground p-1.5 sm:p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <X className="w-4 h-4" />
                   </button>
