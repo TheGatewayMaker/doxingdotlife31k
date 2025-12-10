@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import multer from "multer";
 import { handleDemo } from "./routes/demo";
 import { handleUpload } from "./routes/upload";
@@ -12,7 +13,12 @@ import {
   handleDeleteMediaFile,
   handleUpdatePost,
 } from "./routes/admin";
-import { handleLogout, handleCheckAuth, authMiddleware } from "./routes/auth";
+import {
+  handleLogin,
+  handleLogout,
+  handleCheckAuth,
+  authMiddleware,
+} from "./routes/auth";
 import { validateR2Configuration } from "./utils/r2-storage";
 
 // VPS configuration with proper size handling
